@@ -63,10 +63,7 @@ const HeatMapBlock = ({ size, value, index, colors,redcolors,colorsPercentage, m
               </View>
           </View>
         </MenuTrigger>
-        <MenuOptions optionsContainerStyle={{minWidth:150,borderRadius:7,height:60,alignItems:'center',justifyContent:'center',backgroundColor:color}}>    
-            {/* <View style={{alignItems:'center',justifyContent:'center'}}>
-              <Text>Hello World</Text>
-            </View>                             */}
+        <MenuOptions optionsContainerStyle={{minWidth:150,borderRadius:7,height:60,alignItems:'center',justifyContent:'center',backgroundColor:color}}>                
             <MenuOption style={{borderTopWidth:0,borderLeftWidth:0,borderRightWidth:0,borderBottomWidth:0}}>
                 <View style={{borderWidth:0,padding:3,minWidth:130,alignItems:'center',justifyContent:'center'}}>
                     <Text style={{fontSize:13,fontFamily:'Montserrat-SemiBold',color:black_color}}>{value.name}</Text>
@@ -100,53 +97,13 @@ const HeatMapColumn = ({ children }) => (
 );
 
 const HeatMap = ({ numberOfLines, values, indexStart, colors,redcolors,colorsPercentage, maximumValue, blocksSize, onBlockPress, blocksStyle }) => {
-  // const [maxValue, setMaxValue] = useState(maximumValue);
-  // const [minValue, setMinValue] = useState(maximumValue);
-
+  
   const [maxValue, setMaxValue] = useState(0);
   const [minValue, setMinValue] = useState(0);
   
-  useEffect(() => {
-   // setRelativeMaxValue();
-   //setRelativeMinValue();
+  useEffect(() => {   
    setRelativeMaxMinValue();
-
   }, []);
-
-  // const setRelativeMaxValue = () => {
-
-  //   if(maxValue !== 'relative') return;
-  //   let max = 1;
-
-  //   for(let i = 0; i < values.length; i++) {
-
-  //     if(values[i] >= 0)
-  //     {
-  //       if(values[i] > max)
-  //         max = values[i];
-  //     }      
-  //   }
-
-  //   setMaxValue(max);
-  // }
-
-  // const setRelativeMinValue = () => {
-
-  //   if(minValue !== 'relative') return;
-  //   let min = -1;
-
-  //   for(let i = 0; i < values.length; i++) {
-
-  //     if(values[i] < 0)
-  //     {
-  //       if(values[i] < min)
-  //         min = values[i];
-  //     }      
-  //   }
-
-  //   setMinValue(min);
-  // }
-
 
   const setRelativeMaxMinValue = () => {
 
