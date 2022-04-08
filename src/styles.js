@@ -1,7 +1,7 @@
 const styles = {
   heatMapBlock: {
-    borderRadius: 4,
-    margin: 2
+    borderRadius: 0,
+    margin: 1.5
   }
 };
     

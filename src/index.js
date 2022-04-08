@@ -2,17 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, TouchableOpacity,Text } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-  renderers
-} from 'react-native-popup-menu';
-
-import {heatmap_green_dark,heatmap_green_medium,heatmap_green_light,heatmap_green_extra_light,heatmap_no_color,heatmap_red_dark,heatmap_red_medium,heatmap_red_light,heatmap_red_extra_light,black_color} from "../../../AppColors";
-
-const { Popover } = renderers;
+import {heatmap_green_dark,heatmap_green_medium,heatmap_green_light,heatmap_green_extra_light,heatmap_no_color,heatmap_red_dark,heatmap_red_medium,heatmap_red_light,heatmap_red_extra_light,black_color,white_color} from "../../../AppColors";
 
 const HeatMapBlock = ({ size, value, index, colors,redcolors,colorsPercentage, maximumValue, minimumValue, onBlockPress, style }) => {
 
@@ -46,52 +36,24 @@ const HeatMapBlock = ({ size, value, index, colors,redcolors,colorsPercentage, m
   if(!color)
     return null;
   
+  let fontColor = color === '#59FF59' || color === '#ACFFAC'?black_color : white_color;
+
   return (
-
-      <Menu renderer={Popover} rendererProps={{ placement: 'top',anchorStyle: {marginRight:1,backgroundColor:color} }}>
-        <MenuTrigger>
-          <View onPress={() => onBlockPress({ value, index })} style={[styles.heatMapBlock, { backgroundColor: color, width: size, height: size }, style]}>
-              <View style={{flex:1,borderWidth:0}}>
-                <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:'flex-end'}}>
-                    <Text style={{fontSize:13,fontFamily:'Montserrat-Regular',color:black_color}}>
-                      {value.name.length > 10 ? `${value.name.substring(0, 5)}...`:value.name}  
-                    </Text>
-                </View>
-                <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:"flex-start"}}>
-                    <Text style={{fontSize:13,fontFamily:'Montserrat-Regular',color:black_color}}>{value.value}</Text>
-                </View>
-              </View>
-          </View>
-        </MenuTrigger>
-        <MenuOptions optionsContainerStyle={{minWidth:150,borderRadius:7,height:60,alignItems:'center',justifyContent:'center',backgroundColor:color}}>                
-            <MenuOption style={{borderTopWidth:0,borderLeftWidth:0,borderRightWidth:0,borderBottomWidth:0}}>
-                <View style={{borderWidth:0,padding:3,minWidth:130,alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{fontSize:13,fontFamily:'Montserrat-SemiBold',color:black_color}}>{value.name}</Text>
-                </View>
-                <View style={{borderWidth:0,padding:3,minWidth:130,alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{fontSize:13,fontFamily:'Montserrat-Regular',color:black_color}}>{value.value}</Text>
-                </View>                                
-            </MenuOption>
-        </MenuOptions>
-      </Menu>
-
-    // <TouchableOpacity onPress={() => onBlockPress({ value, index })} style={[styles.heatMapBlock, { backgroundColor: color, width: size, height: size }, style]}>
-    //   <View style={{flex:1,borderWidth:0}}>
-    //     <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:'flex-end'}}>
-    //       <Text style={{fontSize:13,fontFamily:'Montserrat-Regular'}}>
-    //           {value.name.length > 10 ? `${value.name.substring(0, 5)}...`:value.name}  
-    //       </Text>
-    //     </View>
-    //     <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:"flex-start"}}>
-    //       <Text style={{fontSize:13,fontFamily:'Montserrat-Regular'}}>{value.value}</Text>
-    //     </View>
-    //   </View>
-    // </TouchableOpacity>
+    <TouchableOpacity onPress={() => onBlockPress({ value, index })} style={[styles.heatMapBlock, { flex:1,backgroundColor: color, width: size, height: 50 }, style]}>
+      <View style={{flex:1,borderWidth:0}}>
+        <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:'center'}}>
+          <Text style={{fontSize:11,fontFamily:'Montserrat-Regular',color:fontColor}}>{value.name}</Text>
+        </View>
+        <View style={{flex:1,borderWidth:0,alignItems:'center',justifyContent:"flex-start"}}>
+          <Text style={{fontSize:12,fontFamily:'Montserrat-Regular',color:fontColor}}>{value.value}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const HeatMapColumn = ({ children }) => (
-  <View style={[styles.heatMapColumn,{flexDirection:'row'}]}>
+  <View style={[styles.heatMapColumn,{flex: 1,flexDirection: 'row',justifyContent: 'space-between',}]}>
     { children }
   </View>
 );
@@ -137,13 +99,13 @@ const HeatMap = ({ numberOfLines, values, indexStart, colors,redcolors,colorsPer
     setMinValue(minValue)    
   }
 
-
   const generateBlocks = atualBlock => {
-    const blocks = [];
+    const blocks = [];    
+    
     for(let j = 0; j < numberOfLines; j++)
-    {
-       if(values[j + atualBlock])
-       {
+    {              
+       if(values[j])
+       {          
           blocks.push(<HeatMapBlock key={Math.random()} style={blocksStyle} size={blocksSize} index={j + atualBlock + indexStart} value={values[j + atualBlock]} colors={colors} redcolors={redcolors} colorsPercentage={colorsPercentage} onBlockPress={onBlockPress} maximumValue={maxValue} minimumValue={minValue} />);
        }    
     }    
@@ -155,7 +117,8 @@ const HeatMap = ({ numberOfLines, values, indexStart, colors,redcolors,colorsPer
     const columns = [];
     let atualBlock = 0;
 
-    for(let i = 0; i < numberOfColumns; i++) {      
+    for(let i = 0; i < numberOfColumns; i++) {   
+      
       columns.push(
       <HeatMapColumn key={Math.random()}>
         { generateBlocks(atualBlock) }
